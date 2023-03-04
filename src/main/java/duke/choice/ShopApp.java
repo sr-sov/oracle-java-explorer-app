@@ -105,6 +105,7 @@ public class ShopApp {
             WebServer ws = WebServer.create(config,routing);
             ws.start();
         } catch (UnknownHostException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
