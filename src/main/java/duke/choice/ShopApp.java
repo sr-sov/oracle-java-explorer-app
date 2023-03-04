@@ -4,7 +4,12 @@ import duke.choice.clothes.LongSleeve;
 import duke.choice.clothes.Size;
 import duke.choice.Clothing;
 import duke.choice.C;
+import io.helidon.webserver.Routing;
+import io.helidon.webserver.ServerConfiguration;
+import io.helidon.webserver.WebServer;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
@@ -84,6 +89,23 @@ public class ShopApp {
         Arrays.sort(c1.getItems());
         for (Clothing item: c1.getItems()){
             System.out.println(item);
+        }
+
+        /*
+        ORACLE CLOUD DEPLOYMENT
+         */
+
+        try {
+            ItemList list = new ItemList(c1.getItems());
+
+            Routing routing = Routing.builder().get("/items", list).build();
+
+            ServerConfiguration config = ServerConfiguration.builder().bindAddress(InetAddress.getLocalHost()).port(8888).build();
+
+            WebServer ws = WebServer.create(config,routing);
+            ws.start();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
         }
     }
 }
